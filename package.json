@@ -3,9 +3,9 @@
   "homepage": "https://devmedo.github.io/keplerx/",
   "version": "0.1.0",
   "scripts": {
-    "start": "webpack-dev-server --progress --hot --open",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
+    "start": "webpack-dev-server --progress --hot --open"
   },
   "dependencies": {
     "gh-pages": "^3.2.3",
