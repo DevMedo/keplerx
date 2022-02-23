@@ -21,7 +21,7 @@
 const resolve = require('path').resolve;
 const join = require('path').join;
 const webpack = require('webpack');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const SRC_DIR = resolve(__dirname, './src');
 const OUTPUT_DIR = resolve(__dirname, './build');
@@ -61,7 +61,8 @@ const LIBRARY_BUNDLE_CONFIG = env => ({
     fs: 'empty'
   },
 
-  plugins: [new webpack.EnvironmentPlugin(['MapboxAccessToken']), new BundleAnalyzerPlugin()]
+  //plugins: [new webpack.EnvironmentPlugin(['MapboxAccessToken']), new BundleAnalyzerPlugin()]
+  plugins: [new webpack.EnvironmentPlugin(['MapboxAccessToken'])]
 });
 
 module.exports = env => LIBRARY_BUNDLE_CONFIG(env);
