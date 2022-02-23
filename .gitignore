@@ -9,5 +9,5 @@ coverage/
 /coverage
 
 # production
-/build
+bundle.js
 /dist
