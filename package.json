@@ -1,4 +1,7 @@
 {
+  "name": "keplerx",
+  "homepage": "https://devmedo.github.io/keplerx/",
+  "version": "0.1.0",
   "scripts": {
     "start": "webpack-dev-server --progress --hot --open",
     "predeploy": "npm run build",
