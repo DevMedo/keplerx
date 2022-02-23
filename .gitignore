@@ -9,6 +9,5 @@ coverage/
 /coverage
 
 # production
-# /build
-
-# /dist
+/build
+/dist

@@ -18,51 +18,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-const resolve = require('path').resolve;
-const join = require('path').join;
-const webpack = require('webpack');
+const resolve = require("path").resolve;
+const join = require("path").join;
+const webpack = require("webpack");
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const SRC_DIR = resolve(__dirname, './src');
-const OUTPUT_DIR = resolve(__dirname, './build');
+const SRC_DIR = resolve(__dirname, "./src");
+const OUTPUT_DIR = resolve(__dirname, "./");
 
-const LIBRARY_BUNDLE_CONFIG = env => ({
+const LIBRARY_BUNDLE_CONFIG = (env) => ({
   entry: {
-    KeplerGl: join(SRC_DIR, 'index.js')
+    KeplerGl: join(SRC_DIR, "index.js"),
   },
 
   // Silence warnings about big bundles
   stats: {
-    warnings: false
+    warnings: false,
   },
 
   output: {
     // Generate the bundle in dist folder
     path: OUTPUT_DIR,
-    filename: 'bundle.js',
-    publicPath: '/'
+    filename: "bundle.js",
+    publicPath: "/",
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
-    modules: ['node_modules', SRC_DIR]
+    extensions: [".tsx", ".ts", ".js"],
+    modules: ["node_modules", SRC_DIR],
   },
   // let's put everything in
   module: {
     rules: [
       {
         test: /\.(js|ts|tsx)$/,
-        loader: 'babel-loader',
-        include: [SRC_DIR]
-      }
-    ]
+        loader: "babel-loader",
+        include: [SRC_DIR],
+      },
+    ],
   },
 
   node: {
-    fs: 'empty'
+    fs: "empty",
   },
 
   //plugins: [new webpack.EnvironmentPlugin(['MapboxAccessToken']), new BundleAnalyzerPlugin()]
-  plugins: [new webpack.EnvironmentPlugin(['MapboxAccessToken'])]
+  plugins: [new webpack.EnvironmentPlugin(["MapboxAccessToken"])],
 });
 
-module.exports = env => LIBRARY_BUNDLE_CONFIG(env);
+module.exports = (env) => LIBRARY_BUNDLE_CONFIG(env);
