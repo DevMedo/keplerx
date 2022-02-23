@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Uber Technologies, Inc.
+// Copyright (c) 2022 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,40 +18,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// NOTE: To use this example standalone (e.g. outside of deck.gl repo)
-// delete the local development overrides at the bottom of this file
-
-// avoid destructuring for older Node version support
 const resolve = require('path').resolve;
 const join = require('path').join;
 const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const CONFIG = {
-  // bundle app.js and everything it imports, recursively.
+const SRC_DIR = resolve(__dirname, './src');
+const OUTPUT_DIR = resolve(__dirname, './build');
+
+const LIBRARY_BUNDLE_CONFIG = env => ({
   entry: {
-    app: resolve('./src/index.js')
+    KeplerGl: join(SRC_DIR, 'index.js')
   },
+
+  // Silence warnings about big bundles
+  stats: {
+    warnings: false
+  },
+
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    // Generate the bundle in dist folder
+    path: OUTPUT_DIR,
     filename: 'bundle.js',
     publicPath: '/'
   },
-
-  devtool: 'source-map',
-
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+    modules: ['node_modules', SRC_DIR]
+  },
+  // let's put everything in
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|ts|tsx)$/,
         loader: 'babel-loader',
-        include: join(__dirname, 'src'),
-        exclude: [/node_modules/]
-      },
-      {
-        // The example has some JSON data
-        test: /\.json$/,
-        loader: 'json-loader',
-        exclude: [/node_modules/]
+        include: [SRC_DIR]
       }
     ]
   },
@@ -60,11 +61,7 @@ const CONFIG = {
     fs: 'empty'
   },
 
-  // Optional: Enables reading mapbox token from environment variable
-  plugins: [
-    new webpack.EnvironmentPlugin(['MapboxAccessToken'])
-  ]
-};
+  plugins: [new webpack.EnvironmentPlugin(['MapboxAccessToken']), new BundleAnalyzerPlugin()]
+});
 
-// This line enables bundling against src in this repo rather than installed deck.gl module
-module.exports = CONFIG;
+module.exports = env => LIBRARY_BUNDLE_CONFIG(env);
