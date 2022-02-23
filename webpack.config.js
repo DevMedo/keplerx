@@ -29,7 +29,12 @@ const webpack = require('webpack');
 const CONFIG = {
   // bundle app.js and everything it imports, recursively.
   entry: {
-    app: resolve('./src/main.js')
+    app: resolve('./src/index.js')
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+    publicPath: '/'
   },
 
   devtool: 'source-map',
