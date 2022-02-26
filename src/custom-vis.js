@@ -93,7 +93,6 @@ class CustomVis extends Component {
                     y: this.state.total_amount,
                   },
                 ],
-                svg: { fill: "green" },
                 groupBy: "id",
               }}
             />
