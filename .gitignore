@@ -9,5 +9,5 @@ data_world_flights/
 /coverage
 
 # production
-bundle.js
+#bundle.js
 /dist
