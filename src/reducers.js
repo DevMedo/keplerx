@@ -18,23 +18,58 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import {combineReducers} from 'redux';
-import {handleActions} from 'redux-actions';
-import {routerReducer} from 'react-router-redux';
-import keplerGlReducer from 'kepler.gl/reducers';
+import { combineReducers } from "redux";
+import { handleActions } from "redux-actions";
+import { ActionTypes } from "kepler.gl/actions";
+import { routerReducer } from "react-router-redux";
+import keplerGlReducer from "kepler.gl/reducers";
 
 // INITIAL_APP_STATE
 const initialAppState = {
-  appName: 'example',
-  loaded: false
+  appName: "example",
+  loaded: false,
+  isLayerClicked: false,
+  clickedLayer: null,
 };
+
+const customizedKeplerGlReducer = keplerGlReducer.initialState({
+  uiState: {
+    // hide side panel to disallow user customize the map
+    readOnly: true,
+
+    // customize which map control button to show
+    mapControls: {
+      visibleLayers: {
+        show: false,
+      },
+      mapLegend: {
+        show: true,
+        active: true,
+      },
+      toggle3d: {
+        show: false,
+      },
+      splitMap: {
+        show: false,
+      },
+    },
+  },
+});
 
 const reducers = combineReducers({
   keplerGl: keplerGlReducer,
-  app: handleActions({
-    // you can put your app reducer here
-  }, initialAppState),
-  routing: routerReducer
+  app: handleActions(
+    {
+      // you can put your app reducer here
+      [ActionTypes.LAYER_CLICK]: (state, action) => ({
+        ...state,
+        isLayerClicked: action.payload.info ? true : false,
+        clickedLayer: action.payload.info,
+      }),
+    },
+    initialAppState
+  ),
+  routing: routerReducer,
 });
 
 export default reducers;

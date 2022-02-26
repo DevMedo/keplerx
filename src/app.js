@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React, { Component } from "react";
+import React, { Component, useState, setState, useEffect } from "react";
 import { connect } from "react-redux";
 import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 import KeplerGl from "kepler.gl";
@@ -33,18 +33,45 @@ import Processors from "kepler.gl/processors";
 import KeplerGlSchema from "kepler.gl/schemas";
 import Button from "./button";
 import downloadJsonFile from "./file-download";
+// import { MapPopoverFactory, injectComponents } from "kepler.gl/components";
+import CustomMapPopoverFactory from "./custom-map-popover";
+// import my custom visulastion component
+import CustomVis from "custom-vis";
 
 const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
+// const KeplerGl = injectComponents([
+//   [MapPopoverFactory, CustomMapPopoverFactory],
+// ]);
+
+// KeplerGl.injectComponents([
+//   //   replaceLoadDataModal(),
+//   //   replaceMapControl(),
+//   //   replacePanelHeader()
+// ]);
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLayerClicked: props.app.isLayerClicked,
+      clickedLayer: props.app.clickedLayer,
+    };
+  }
+
+  // static componentWillReceiveProps() {
+  //   console.log(this.props);
+  //   if (this.state.isLayerClicked !== this.props.app.isLayerClicked) {
+  //     return {
+  //       isLayerClicked: this.props.app.isLayerClicked,
+  //       clickedLayer: this.props.app.layerClicked,
+  //     };
+  //   }
+  //   return null;
+  // }
+
   componentDidMount() {
     // Use processCsvData helper to convert csv file into kepler.gl structure {fields, rows}
-
-    // const myCsvData = `VendorID,tpep_pickup_datetime,tpep_dropoff_datetime,passenger_count,trip_distance,pickup_longitude,pickup_latitude,dropoff_longitude,dropoff_latitude,fare_amount,tip_amount,total_amount
-    // 2,2015-01-15 16:18:03 +00:00,2015-01-15 16:50:30 +00:00,2,12.42,-73.87129211,40.77394104,-73.77693176,40.64469147,36,7.4,45.2`;
-    const myCsvData = `VendorID,tpep_pickup_datetime,tpep_dropoff_datetime,passenger_count,trip_distance,pickup_longitude,pickup_latitude,dropoff_longitude,dropoff_latitude,fare_amount,tip_amount,total_amount
-    2,2015-01-15 16:18:03 +00:00,2015-01-15 16:50:30 +00:00,2,12.42,-73.87129211,40.77394104,-73.77693176,40.64469147,36,7.4,45.2`;
-    const data = Processors.processCsvData(myCsvData);
+    const data = Processors.processCsvData(nycTripsSubset);
     // Create dataset structure
     const dataset = {
       data,
@@ -54,11 +81,19 @@ class App extends Component {
         id: "my_data",
       },
     };
-    console.log(dataset);
+    // console.log(dataset);
     // addDataToMap action to inject dataset into kepler.gl instance
     this.props.dispatch(addDataToMap({ datasets: dataset, config: nycConfig }));
   }
 
+  componentDidUpdate() {
+    if (this.state.clickedLayer !== this.props.app.clickedLayer) {
+      this.state = {
+        isLayerClicked: this.props.app.isLayerClicked,
+        clickedLayer: this.props.app.clickedLayer,
+      };
+    }
+  }
   // Created to show how to replace dataset with new data and keeping the same configuration
   replaceData = () => {
     // Use processCsvData helper to convert csv file into kepler.gl structure {fields, rows}
@@ -113,6 +148,7 @@ class App extends Component {
       >
         <Button onClick={this.exportMapConfig}>Export Config</Button>
         <Button onClick={this.replaceData}>Replace Data</Button>
+        <CustomVis show={this.state.isLayerClicked} />
         <AutoSizer>
           {({ height, width }) => (
             <KeplerGl
