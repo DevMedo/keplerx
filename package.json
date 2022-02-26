@@ -9,6 +9,7 @@
     "start": "webpack-dev-server --progress --hot --open"
   },
   "dependencies": {
+    "d3plus-react": "^1.1.1",
     "global": "^4.3.0",
     "kepler.gl": "^0.1.6",
     "react": "^15.3.1",

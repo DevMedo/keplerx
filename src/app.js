@@ -34,7 +34,7 @@ import KeplerGlSchema from "kepler.gl/schemas";
 import Button from "./button";
 import downloadJsonFile from "./file-download";
 // import { MapPopoverFactory, injectComponents } from "kepler.gl/components";
-import CustomMapPopoverFactory from "./custom-map-popover";
+// import CustomMapPopoverFactory from "./custom-map-popover";
 // import my custom visulastion component
 import CustomVis from "custom-vis";
 
@@ -146,9 +146,11 @@ class App extends Component {
           minHeight: "70vh",
         }}
       >
-        <Button onClick={this.exportMapConfig}>Export Config</Button>
-        <Button onClick={this.replaceData}>Replace Data</Button>
-        <CustomVis show={this.state.isLayerClicked} />
+        {/* <Button onClick={this.replaceData}>Replace Data</Button> */}
+        <CustomVis
+          show={this.state.isLayerClicked}
+          clickedLayer={this.state.clickedLayer}
+        />
         <AutoSizer>
           {({ height, width }) => (
             <KeplerGl

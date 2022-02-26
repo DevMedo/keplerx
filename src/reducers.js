@@ -61,7 +61,7 @@ const reducers = combineReducers({
   app: handleActions(
     {
       // you can put your app reducer here
-      [ActionTypes.LAYER_CLICK]: (state, action) => ({
+      [ActionTypes.LAYER_HOVER]: (state, action) => ({
         ...state,
         isLayerClicked: action.payload.info ? true : false,
         clickedLayer: action.payload.info,
