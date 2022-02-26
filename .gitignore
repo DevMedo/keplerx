@@ -4,7 +4,7 @@ node_modules/
 coverage/
 .nyc_output/
 .idea
-
+data_world_flights/
 # testing
 /coverage
 
