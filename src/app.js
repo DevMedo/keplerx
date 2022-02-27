@@ -22,7 +22,6 @@ import React, { Component, useState, setState, useEffect } from "react";
 import { connect } from "react-redux";
 import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 import KeplerGl from "kepler.gl";
-import nycTrips from "./data/nyc-trips.csv";
 import nycTripsSubset from "./data/nyc-subset.csv";
 import nycConfig from "./data/nyc-config.json";
 // Kepler.gl actions
@@ -32,30 +31,17 @@ import Processors from "kepler.gl/processors";
 // Kepler.gl Schema APIs
 import KeplerGlSchema from "kepler.gl/schemas";
 import Button from "./button";
-import downloadJsonFile from "./file-download";
 // import { MapPopoverFactory, injectComponents } from "kepler.gl/components";
 // import CustomMapPopoverFactory from "./custom-map-popover";
 // import my custom visulastion component
 import CustomVis from "custom-vis";
 
 const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
-// const KeplerGl = injectComponents([
-//   [MapPopoverFactory, CustomMapPopoverFactory],
-// ]);
-
-// KeplerGl.injectComponents([
-//   //   replaceLoadDataModal(),
-//   //   replaceMapControl(),
-//   //   replacePanelHeader()
-// ]);
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isLayerClicked: props.app.isLayerClicked,
-      clickedLayer: props.app.clickedLayer,
-    };
+    this.state = props;
   }
 
   // static componentWillReceiveProps() {
@@ -88,10 +74,12 @@ class App extends Component {
 
   componentDidUpdate() {
     if (this.state.clickedLayer !== this.props.app.clickedLayer) {
-      this.state = {
+      this.setState({
         isLayerClicked: this.props.app.isLayerClicked,
         clickedLayer: this.props.app.clickedLayer,
-      };
+      });
+    } else {
+      return null;
     }
   }
   // Created to show how to replace dataset with new data and keeping the same configuration
@@ -127,15 +115,6 @@ class App extends Component {
     return KeplerGlSchema.getConfigToSave(map);
   }
 
-  // This method is used as reference to show how to export the current kepler.gl instance configuration
-  // Once exported the configuration can be imported using parseSavedConfig or load method from KeplerGlSchema
-  exportMapConfig = () => {
-    // create the config object
-    const mapConfig = this.getMapConfig();
-    // save it as a json file
-    downloadJsonFile(mapConfig, "kepler.gl.json");
-  };
-
   render() {
     return (
       <div
@@ -146,7 +125,6 @@ class App extends Component {
           minHeight: "70vh",
         }}
       >
-        {/* <Button onClick={this.replaceData}>Replace Data</Button> */}
         <CustomVis
           show={this.state.isLayerClicked}
           clickedLayer={this.state.clickedLayer}

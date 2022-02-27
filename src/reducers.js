@@ -32,29 +32,29 @@ const initialAppState = {
   clickedLayer: null,
 };
 
-const customizedKeplerGlReducer = keplerGlReducer.initialState({
-  uiState: {
-    // hide side panel to disallow user customize the map
-    readOnly: true,
+// const customizedKeplerGlReducer = keplerGlReducer.initialState({
+//   uiState: {
+//     // hide side panel to disallow user customize the map
+//     readOnly: true,
 
-    // customize which map control button to show
-    mapControls: {
-      visibleLayers: {
-        show: false,
-      },
-      mapLegend: {
-        show: true,
-        active: true,
-      },
-      toggle3d: {
-        show: false,
-      },
-      splitMap: {
-        show: false,
-      },
-    },
-  },
-});
+//     // customize which map control button to show
+//     mapControls: {
+//       visibleLayers: {
+//         show: false,
+//       },
+//       mapLegend: {
+//         show: true,
+//         active: true,
+//       },
+//       toggle3d: {
+//         show: false,
+//       },
+//       splitMap: {
+//         show: false,
+//       },
+//     },
+//   },
+// });
 
 const reducers = combineReducers({
   keplerGl: keplerGlReducer,
